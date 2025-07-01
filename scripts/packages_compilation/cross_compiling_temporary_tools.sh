@@ -600,3 +600,5 @@ rm -rf gcc-15.1.0
 tput setaf 2
 echo "[gcc-15.1.0] is compiled !!!"
 tput sgr0
+
+popd
