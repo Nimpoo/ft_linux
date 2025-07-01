@@ -507,7 +507,7 @@ read -n 1 -s -r -p ""
 echo ""
 
 #-----------------------------------------------------------#
-tar -xf binutils-2.44.xz
+tar -xf binutils-2.44.tar.xz
 pushd binutils-2.44
   sed '6031s/$add_dir//' -i ltmain.sh
   mkdir -v build
