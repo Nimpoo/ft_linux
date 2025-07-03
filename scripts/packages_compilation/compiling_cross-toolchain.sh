@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eu
+
 pushd $LFS/sources
 
 
@@ -92,10 +94,9 @@ pushd gcc-15.1.0
       --enable-languages=c,c++
     make
     make install
-    cd ..
-    cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
-      `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/include/limits.h
     popd
+  cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
+    `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/include/limits.h
   popd
 rm -rf gcc-15.1.0
 

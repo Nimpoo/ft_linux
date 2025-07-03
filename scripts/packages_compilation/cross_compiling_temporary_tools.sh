@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eu
+
 pushd $LFS/sources
 
 
