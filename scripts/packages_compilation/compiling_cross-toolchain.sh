@@ -106,27 +106,27 @@ tput sgr0
 
 #?###########################################################
 #?                                                          #
-#                       *linux-6.15.2*                      #
+#                       *linux-6.15.4*                      #
 #?                                                          #
 #?###########################################################
 
 tput setaf 4
-echo "You are about to compile [linux-6.15.2]. Press any key to continue..."
+echo "You are about to compile [linux-6.15.4]. Press any key to continue..."
 tput sgr0
 read -n 1 -s -r -p ""
 echo ""
 
-tar -xf linux-6.15.2.tar.xz
-pushd linux-6.15.2
+tar -xf linux-6.15.4.tar.xz
+pushd linux-6.15.4
   make mrproper
   make headers
   find usr/include -type f ! -name '*.h' -delete
   cp -rv usr/include $LFS/usr
   popd
-rm -rf linux-6.15.2
+rm -rf linux-6.15.4
 
 tput setaf 2
-echo "[linux-6.15.2] is compiled !!!"
+echo "[linux-6.15.4] is compiled !!!"
 tput sgr0
 
 
