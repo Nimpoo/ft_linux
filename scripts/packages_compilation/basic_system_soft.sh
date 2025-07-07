@@ -1129,19 +1129,19 @@ tput sgr0
 
 #?###########################################################
 #?                                                          #
-#                        *psmic-23.7*                       #
+#                        *psmisc-23.7*                       #
 #?                                                          #
 #?###########################################################
 
 tput setaf 4
-echo "You are about to compile [psmic-23.7]. Press any key to continue..."
+echo "You are about to compile [psmisc-23.7]. Press any key to continue..."
 tput sgr0
 read -n 1 -s -r -p ""
 echo ""
 
 #-----------------------------------------------------------#
-tar -xf psmic-23.7.tar.xz
-pushd psmic-23.7
+tar -xf psmisc-23.7.tar.xz
+pushd psmisc-23.7
   ./configure --prefix=/usr
   make
   make check
@@ -1149,10 +1149,10 @@ pushd psmic-23.7
 #-----------------------------------------------------------#
 
   popd
-rm -rf psmic-23.7
+rm -rf psmisc-23.7
 
 tput setaf 2
-echo "[psmic-23.7] is compiled !!!"
+echo "[psmisc-23.7] is compiled !!!"
 tput sgr0
 
 
@@ -1316,4 +1316,507 @@ rm -rf libtool-2.5.4
 
 tput setaf 2
 echo "[libtool-2.5.4] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                        *gdbm-1.25*                        #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [gdbm-1.25]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf gdbm-1.25.tar.gz
+pushd gdbm-1.25
+  ./configure --prefix=/usr    \
+              --disable-static \
+              --enable-libgdbm-compat
+  make
+  make check
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf gdbm-1.25
+
+tput setaf 2
+echo "[gdbm-1.25] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                        *gperf-3.3*                        #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [gperf-3.3]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf gperf-3.3.tar.gz
+pushd gperf-3.3
+  ./configure --prefix=/usr --docdir=/usr/share/doc/gperf-3.3
+  make
+  make check
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf gperf-3.3
+
+tput setaf 2
+echo "[gperf-3.3] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                       *expat-2.7.1*                       #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [expat-2.7.1]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf expat-2.7.1.tar.xz
+pushd expat-2.7.1
+  ./configure --prefix=/usr    \
+              --disable-static \
+              --docdir=/usr/share/doc/expat-2.7.1
+  make
+  make check
+  make install
+  install -v -m644 doc/*.{html,css} /usr/share/doc/expat-2.7.1
+#-----------------------------------------------------------#
+
+  popd
+rm -rf expat-2.7.1
+
+tput setaf 2
+echo "[expat-2.7.1] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                      *inetutils-2.6*                      #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [inetutils-2.6]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf inetutils-2.6.tar.xz
+pushd inetutils-2.6
+  sed -i 's/def HAVE_TERMCAP_TGETENT/ 1/' telnet/telnet.c
+  ./configure --prefix=/usr        \
+              --bindir=/usr/bin    \
+              --localstatedir=/var \
+              --disable-logger     \
+              --disable-whois      \
+              --disable-rcp        \
+              --disable-rexec      \
+              --disable-rlogin     \
+              --disable-rsh        \
+              --disable-servers
+  make
+  make check
+  make install
+  mv -v /usr/{,s}bin/ifconfig
+#-----------------------------------------------------------#
+
+  popd
+rm -rf inetutils-2.6
+
+tput setaf 2
+echo "[inetutils-2.6] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                        *less-679*                         #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [less-679]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf less-679.tar.gz
+pushd less-679
+  ./configure --prefix=/usr --sysconfdir=/etc
+  make
+  make check
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf less-679
+
+tput setaf 2
+echo "[less-679] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                        *perl-5.40.2*                       #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [perl-5.40.2]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf perl-5.40.2.tar.xz
+pushd perl-5.40.2
+  patch -Np1 -i ../perl-5.40.2-upstream_fix-1.patch
+
+  export BUILD_ZLIB=False
+  export BUILD_BZIP2=0
+
+  sh Configure -des                                         \
+              -D prefix=/usr                                \
+              -D vendorprefix=/usr                          \
+              -D privlib=/usr/lib/perl5/5.40/core_perl      \
+              -D archlib=/usr/lib/perl5/5.40/core_perl      \
+              -D sitelib=/usr/lib/perl5/5.40/site_perl      \
+              -D sitearch=/usr/lib/perl5/5.40/site_perl     \
+              -D vendorlib=/usr/lib/perl5/5.40/vendor_perl  \
+              -D vendorarch=/usr/lib/perl5/5.40/vendor_perl \
+              -D man1dir=/usr/share/man/man1                \
+              -D man3dir=/usr/share/man/man3                \
+              -D pager="/usr/bin/less -isR"                 \
+              -D useshrplib                                 \
+              -D usethreads
+
+  make
+  TEST_JOBS=$(nproc) make test_harness
+  make install
+
+  unset BUILD_ZLIB BUILD_BZIP2
+#-----------------------------------------------------------#
+
+  popd
+rm -rf perl-5.40.2
+
+tput setaf 2
+echo "[perl-5.40.2] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                    *XML::Parser-2.47*                     #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [XML-Parser-2.47]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf XML-Parser-2.47.tar.gz
+pushd XML-Parser-2.47
+  perl Makefile.PL
+  make
+  make check
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf XML-Parser-2.47
+
+tput setaf 2
+echo "[XML-Parser-2.47] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                     *intltool-0.51.0*                     #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [intltool-0.51.0]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf intltool-0.51.0.tar.gz
+pushd intltool-0.51.0
+  sed -i 's:\\\${:\\\$\\{:' intltool-update.in
+  ./configure --prefix=/usr
+  make
+  make check
+  make install
+  install -v -Dm644 doc/I18N-HOWTO /usr/share/doc/intltool-0.51.0/I18N-HOWTO
+#-----------------------------------------------------------#
+
+  popd
+rm -rf intltool-0.51.0
+
+tput setaf 2
+echo "[intltool-0.51.0] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                      *autoconf-2.72*                      #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [autoconf-2.72]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf autoconf-2.72.tar.xz
+pushd autoconf-2.72
+  ./configure --prefix=/usr
+  make
+  make check
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf autoconf-2.72
+
+tput setaf 2
+echo "[autoconf-2.72] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                     *automake-1.18.1*                     #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [automake-1.18.1]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf automake-1.18.1.tar.xz
+pushd automake-1.18.1
+  ./configure --prefix=/usr --docdir=/usr/share/doc/automake-1.18.1
+  make
+  make -j$(($(nproc)>4?$(nproc):4)) check
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf automake-1.18.1
+
+tput setaf 2
+echo "[automake-1.18.1] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                      *openSSL-3.5.0*                      #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [openSSL-3.5.0]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf openSSL-3.5.0.tar.gz
+pushd openSSL-3.5.0
+  ./config --prefix=/usr         \
+          --openssldir=/etc/ssl \
+          --libdir=lib          \
+          shared                \
+          zlib-dynamic
+  make
+  HARNESS_JOBS=$(nproc) make test
+  sed -i '/INSTALL_LIBS/s/libcrypto.a libssl.a//' Makefile
+  make MANSUFFIX=ssl install
+  mv -v /usr/share/doc/openssl /usr/share/doc/openssl-3.5.0
+  cp -vfr doc/* /usr/share/doc/openssl-3.5.0
+#-----------------------------------------------------------#
+
+  popd
+rm -rf openSSL-3.5.0
+
+tput setaf 2
+echo "[openSSL-3.5.0] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                *libelf from elfutils-0.193*               #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [libelf from elfutils-0.193]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf elfutils-0.193.tar.bz2
+pushd elfutils-0.193
+  ./configure --prefix=/usr        \
+              --disable-debuginfod \
+              --enable-libdebuginfod=dummy
+  make
+  make check
+  make -C libelf install
+  install -vm644 config/libelf.pc /usr/lib/pkgconfig
+  rm /usr/lib/libelf.a
+#-----------------------------------------------------------#
+
+  popd
+rm -rf elfutils-0.193
+
+tput setaf 2
+echo "[libelf from elfutils-0.193] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                       *libffi-3.5.1*                      #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [libffi-3.5.1]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf libffi-3.5.1.tar.gz
+pushd libffi-3.5.1
+  ./configure --prefix=/usr    \
+              --disable-static \
+              --with-gcc-arch=native
+  make
+  make check
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf libffi-3.5.1
+
+tput setaf 2
+echo "[libffi-3.5.1] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                      *Python-3.13.5*                      #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [Python-3.13.5]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf Python-3.13.5.tar.xz
+pushd Python-3.13.5
+  ./configure --prefix=/usr          \
+              --enable-shared        \
+              --with-system-expat    \
+              --enable-optimizations \
+              --without-static-libpython
+  make
+  make test TESTOPTS="--timeout 120"
+  make install
+
+# ? If you want to avoid the future pip3 warning about its version :
+# cat > /etc/pip.conf << EOF
+# [global]
+# root-user-action = ignore
+# disable-pip-version-check = true
+# EOF
+
+  install -v -dm755 /usr/share/doc/python-3.13.5/html
+  tar --strip-components=1  \
+      --no-same-owner       \
+      --no-same-permissions \
+      -C /usr/share/doc/python-3.13.5/html \
+      -xvf ../python-3.13.5-docs-html.tar.bz2
+#-----------------------------------------------------------#
+
+  popd
+rm -rf Python-3.13.5
+
+tput setaf 2
+echo "[Python-3.13.5] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                    *flit_core-3.12.0*                     #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [flit_core-3.12.0]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf flit_core-3.12.0.tar.gz
+pushd flit_core-3.12.0
+  pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+  pip3 install --no-index --find-links dist flit_core
+#-----------------------------------------------------------#
+
+  popd
+rm -rf flit_core-3.12.0
+
+tput setaf 2
+echo "[flit_core-3.12.0] is compiled !!!"
 tput sgr0
