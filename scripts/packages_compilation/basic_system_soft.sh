@@ -1772,6 +1772,9 @@ pushd Python-3.13.5
   make test TESTOPTS="--timeout 120"
   make install
 
+  #! For install pip3 :
+  python3 -m ensurepip --upgrade
+
 # ? If you want to avoid the future pip3 warning about its version :
 # cat > /etc/pip.conf << EOF
 # [global]
@@ -1819,4 +1822,944 @@ rm -rf flit_core-3.12.0
 
 tput setaf 2
 echo "[flit_core-3.12.0] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                      *packaging-25.0*                     #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [packaging-25.0]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf packaging-25.0.tar.hz
+pushd packaging-25.0
+  pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+  pip3 install --no-index --find-links dist packaging
+#-----------------------------------------------------------#
+
+  popd
+rm -rf packaging-25.0
+
+tput setaf 2
+echo "[packaging-25.0] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                       *wheel-0.46.1*                      #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [wheel-0.46.1]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf wheel-0.46.1.tar.gz
+pushd wheel-0.46.1
+  pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+  pip3 install --no-index --find-links dist wheel
+#-----------------------------------------------------------#
+
+  popd
+rm -rf wheel-0.46.1
+
+tput setaf 2
+echo "[] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                    *setuptools-80.9.0*                    #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [setuptools-80.9.0]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf setuptools-80.9.0.tar.gz
+pushd setuptools-80.9.0
+  pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+  pip3 install --no-index --find-links dist setuptools
+#-----------------------------------------------------------#
+
+  popd
+rm -rf setuptools-80.9.0
+
+tput setaf 2
+echo "[setuptools-80.9.0] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                       *ninja-1.13.0*                      #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [ninja-1.13.0]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf ninja-1.13.0.tar.gz
+pushd ninja-1.13.0
+  export NINJAJOBS=4
+  sed -i '/int Guess/a \
+    int   j = 0;\
+    char* jobs = getenv( "NINJAJOBS" );\
+    if ( jobs != NULL ) j = atoi( jobs );\
+    if ( j > 0 ) return j;\
+  ' src/ninja.cc
+
+  python3 configure.py --bootstrap --verbose
+  install -vm755 ninja /usr/bin/
+  install -vDm644 misc/bash-completion /usr/share/bash-completion/completions/ninja
+  install -vDm644 misc/zsh-completion  /usr/share/zsh/site-functions/_ninja
+#-----------------------------------------------------------#
+
+  popd
+rm -rf ninja-1.13.0
+
+tput setaf 2
+echo "[ninja-1.13.0] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                       *meson-1.8.2*                       #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [meson-1.8.2]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf meson-1.8.2.tar.gz
+pushd meson-1.8.2
+  pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+  pip3 install --no-index --find-links dist meson
+  install -vDm644 data/shell-completions/bash/meson /usr/share/bash-completion/completions/meson
+  install -vDm644 data/shell-completions/zsh/_meson /usr/share/zsh/site-functions/_meson
+#-----------------------------------------------------------#
+
+  popd
+rm -rf meson-1.8.2
+
+tput setaf 2
+echo "[meson-1.8.2] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                        *kmod-34.2*                        #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [kmod-34.2]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf kmod-34.2.tar.xz
+pushd kmod-34.2
+  mkdir -vp build
+  pushd build
+    meson setup --prefix=/usr ..    \
+                --buildtype=release \
+                -D manpages=false
+    ninja
+    ninja install
+    popd
+#-----------------------------------------------------------#
+
+  popd
+rm -rf kmod-34.2
+
+tput setaf 2
+echo "[kmod-34.2] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                      *coreutils-9.7*                      #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [coreutils-9.7]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf coreutils-9.7.tar.xz
+pushd coreutils-9.7
+  patch -Np1 -i ../coreutils-9.7-upstream_fix-1.patch
+  patch -Np1 -i ../coreutils-9.7-i18n-1.patch
+  autoreconf -fv
+  automake -af
+  FORCE_UNSAFE_CONFIGURE=1 ./configure \
+              --prefix=/usr            \
+              --enable-no-install-program=kill,uptime
+
+  make
+  make NON_ROOT_USERNAME=tester check-root
+
+  groupadd -g 102 dummy -U tester
+  chown -R tester .
+  su tester -c "PATH=$PATH make -k RUN_EXPENSIVE_TESTS=yes check" \
+    < /dev/null
+  groupdel dummy
+
+  make install
+  mv -v /usr/bin/chroot /usr/sbin
+  mv -v /usr/share/man/man1/chroot.1 /usr/share/man/man8/chroot.8
+  sed -i 's/"1"/"8"/' /usr/share/man/man8/chroot.8
+#-----------------------------------------------------------#
+
+  popd
+rm -rf coreutils-9.7
+
+tput setaf 2
+echo "[coreutils-9.7] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                      *diffutils-3.12*                     #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [diffutils-3.12]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf diffutils-3.12.tar.xz
+pushd diffutils-3.12
+  ./configure --prefix=/usr
+  make
+  make check
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf diffutils-3.12
+
+tput setaf 2
+echo "[diffutils-3.12] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                        *gawk-5.3.2*                       #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [gawk-5.3.2]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf gawk-5.3.2.tar.xz
+pushd gawk-5.3.2
+  sed -i 's/extras//' Makefile.in
+  ./configure --prefix=/usr
+  make
+  chown -R tester .
+  su tester -c "PATH=$PATH make check"
+  rm -f /usr/bin/gawk-5.3.2
+  make install
+  ln -sv gawk.1 /usr/share/man/man1/awk.1
+  install -vDm644 doc/{awkforai.txt,*.{eps,pdf,jpg}} -t /usr/share/doc/gawk-5.3.2
+#-----------------------------------------------------------#
+
+  popd
+rm -rf gawk-5.3.2
+
+tput setaf 2
+echo "[gawk-5.3.2] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                     *findutils-4.10.0*                    #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [findutils-4.10.0]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf findutils-4.10.0
+pushd findutils-4.10.0
+  ./configure --prefix=/usr --localstatedir=/var/lib/locate
+  make
+  chown -R tester .
+  su tester -c "PATH=$PATH make check"
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf findutils-4.10.0
+
+tput setaf 2
+echo "[findutils-4.10.0] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                       *groff-1.23.0*                      #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [groff-1.23.0]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf groff-1.23.0.tar.gz
+pushd groff-1.23.0
+  PAGE=A4 ./configure --prefix=/usr
+  make
+  make check
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf groff-1.23.0
+
+tput setaf 2
+echo "[groff-1.23.0] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                        *grub-2.12*                        #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [grub-2.12]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf grub-2.12.tar.xz
+pushd grub-2.12
+  unset {C,CPP,CXX,LD}FLAGS
+  echo depends bli part_gpt > grub-core/extra_deps.lst
+
+  ./configure --prefix=/usr     \
+              --sysconfdir=/etc \
+              --disable-efiemu  \
+              --disable-werror
+
+  make
+  make install
+  mv -v /etc/bash_completion.d/grub /usr/share/bash-completion/completions
+#-----------------------------------------------------------#
+
+  popd
+rm -rf grub-2.12
+
+tput setaf 2
+echo "[grub-2.12] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                        *gzip-1.14*                        #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [gzip-1.14]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf gzip-1.14.tar.xz
+pushd gzip-1.14
+  ./configure --prefix=/usr
+  make
+  make check
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf gzip-1.14
+
+tput setaf 2
+echo "[gzip-1.14] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                     *iproute2-6.15.0*                     #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [iproute2-6.15.0]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf iproute2-6.15.0.tar.xz
+pushd iproute2-6.15.0
+  sed -i /ARPD/d Makefile
+  rm -fv man/man8/arpd.8
+  make NETNS_RUN_DIR=/run/netns
+  make SBINDIR=/usr/sbin install
+  install -vDm644 COPYING README* -t /usr/share/doc/iproute2-6.15.0
+#-----------------------------------------------------------#
+
+  popd
+rm -rf iproute2-6.15.0
+
+tput setaf 2
+echo "[iproute2-6.15.0] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                        *kbd-2.8.0*                        #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [kbd-2.8.0]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf kbd-2.8.0.tar.xz
+pushd kbd-2.8.0
+  patch -Np1 -i ../kbd-2.8.0-backspace-1.patch
+
+  sed -i '/RESIZECONS_PROGS=/s/yes/no/' configure
+  sed -i 's/resizecons.8 //' docs/man/man8/Makefile.in
+
+  ./configure --prefix=/usr --disable-vlock
+  make
+  make install
+  cp -R -v docs/doc -T /usr/share/doc/kbd-2.8.0
+#-----------------------------------------------------------#
+
+  popd
+rm -rf kbd-2.8.0
+
+tput setaf 2
+echo "[kbd-2.8.0] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                    *libpipeline-1.5.8*                    #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [libpipeline-1.5.8]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf libpipeline-1.5.8.tar.gz
+pushd libpipeline-1.5.8
+  ./configure --prefix=/usr
+  make
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf libpipeline-1.5.8
+
+tput setaf 2
+echo "[libpipeline-1.5.8] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                        *make-4.4.1*                       #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [make-4.4.1]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf make-4.4.1.tar.gz
+pushd make-4.4.1
+  ./configure --prefix=/usr
+  make
+  chown -R tester .
+  su tester -c "PATH=$PATH make check"
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf make-4.4.1
+
+tput setaf 2
+echo "[make-4.4.1] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                        *patch-2.8*                        #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [patch-2.8]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf patch-2.8.tar.xz
+pushd patch-2.8
+  ./configure --prefix=/usr
+  make
+  make check
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf patch-2.8
+
+tput setaf 2
+echo "[patch-2.8] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                        *tar-1.35*                         #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [tar-1.35]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf tar-1.35.tar.xz
+pushd tar-1.35
+  FORCE_UNSAFE_CONFIGURE=1 ./configure --prefix=/usr
+  make
+  make check
+  make install
+  make -C doc install-html docdir=/usr/share/doc/tar-1.35
+#-----------------------------------------------------------#
+
+  popd
+rm -rf tar-1.35
+
+tput setaf 2
+echo "[tar-1.35] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                       *vim-9.1.1497*                      #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [vim-9.1.1497]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf vim-9.1.1497.tar.gz
+pushd vim-9.1.1497
+  echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
+  ./configure --prefix=/usr
+  make
+
+  chown -R tester .
+  sed '/test_plugin_glvs/d' -i src/testdir/Make_all.mak
+  su tester -c "TERM=xterm-256color LANG=en_US.UTF-8 make -j1 test" \
+    &> vim-test.log
+
+  make install
+  ln -sv vim /usr/bin/vi
+  for L in  /usr/share/man/{,*/}man1/vim.1; do
+      ln -sv vim.1 $(dirname $L)/vi.1
+  done
+  ln -sv ../vim/vim91/doc /usr/share/doc/vim-9.1.1497
+
+cat > /etc/vimrc << "EOF"
+" Begin /etc/vimrc
+
+" Ensure defaults are set before customizing settings, not after
+source $VIMRUNTIME/defaults.vim
+let skip_defaults_vim=1
+
+set nocompatible
+set backspace=2
+set mouse=
+syntax on
+if (&term == "xterm") || (&term == "putty")
+  set background=dark
+endif
+
+" End /etc/vimrc
+EOF
+#-----------------------------------------------------------#
+
+  popd
+rm -rf vim-9.1.1497
+
+tput setaf 2
+echo "[vim-9.1.1497] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                     *markupsafe-3.0.2*                    #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [markupsafe-3.0.2]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf markupsafe-3.0.2.tar.gz
+pushd markupsafe-3.0.2
+  pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+  pip3 install --no-index --find-links dist Markupsafe
+#-----------------------------------------------------------#
+
+  popd
+rm -rf markupsafe-3.0.2
+
+tput setaf 2
+echo "[markupsafe-3.0.2] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                       *jinja2-3.1.6*                      #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [jinja2-3.1.6]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf jinja2-3.1.6.tar.gz
+pushd jinja2-3.1.6
+  pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+  pip3 install --no-index --find-links dist Jinja2
+#-----------------------------------------------------------#
+
+  popd
+rm -rf jinja2-3.1.6
+
+tput setaf 2
+echo "[jinja2-3.1.6] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                      *systemd-257.6*                      #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [systemd-257.6]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf systemd-257.6.tar.gz
+pushd systemd-257.6
+  sed -e 's/GROUP="render"/GROUP="video"/' \
+      -e 's/GROUP="sgx", //'               \
+      -i rules.d/50-udev-default.rules.in
+
+  mkdir -pv build
+  pushd build
+    meson setup ..                \
+          --prefix=/usr           \
+          --buildtype=release     \
+          -D default-dnssec=no    \
+          -D firstboot=false      \
+          -D install-tests=false  \
+          -D ldconfig=false       \
+          -D sysusers=false       \
+          -D rpmmacrosdir=no      \
+          -D homed=disabled       \
+          -D userdb=false         \
+          -D man=disabled         \
+          -D mode=release         \
+          -D pamconfdir=no        \
+          -D dev-kvm-mode=0660    \
+          -D nobody-group=nogroup \
+          -D sysupdate=disabled   \
+          -D ukify=disabled       \
+          -D docdir=/usr/share/doc/systemd-257.6
+    ninja
+    echo 'NAME="Linux From Scratch"' > /etc/os-release
+    ninja test
+    ninja install
+    tar -xf ../../systemd-man-pages-257.6.tar.xz \
+        --no-same-owner --strip-components=1     \
+        -C /usr/share/man
+    systemd-machine-id-setup
+    systemctl preset-all
+#-----------------------------------------------------------#
+
+  popd
+rm -rf systemd-257.6
+
+tput setaf 2
+echo "[systemd-257.6] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                       *dbus-1.16.2*                       #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [dbus-1.16.2]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf dbus-1.16.2.tar.xz
+pushd dbus-1.16.2
+  mkdir -v build
+  pushd build
+    meson setup --prefix=/usr --buildtype=release --wrap-mode=nofallback ..
+    ninja
+    ninja test
+    ninja install
+    ln -sfv /etc/machine-id /var/lib/dbus
+#-----------------------------------------------------------#
+
+  popd
+rm -rf dbus-1.16.2
+
+tput setaf 2
+echo "[dbus-1.16.2] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                      *man-db-2.13.1*                      #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [man-db-2.13.1]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf man-db-2.13.1.tar.xz
+pushd man-db-2.13.1
+  ./configure --prefix=/usr                         \
+              --docdir=/usr/share/doc/man-db-2.13.1 \
+              --sysconfdir=/etc                     \
+              --disable-setuid                      \
+              --enable-cache-owner=bin              \
+              --with-browser=/usr/bin/lynx          \
+              --with-vgrind=/usr/bin/vgrind         \
+              --with-grap=/usr/bin/grap
+  make
+  make check
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf man-db-2.13.1
+
+tput setaf 2
+echo "[man-db-2.13.1] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                     *procps-ng-4.0.5*                     #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [procps-ng-4.0.5]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf procps-ng-4.0.5.tar.xz
+pushd procps-ng-4.0.5
+  ./configure --prefix=/usr                           \
+              --docdir=/usr/share/doc/procps-ng-4.0.5 \
+              --disable-static                        \
+              --disable-kill                          \
+              --enable-watch8bit                      \
+              --with-systemd
+  make
+  chown -R tester .
+  su tester -c "PATH=$PATH make check"
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf procps-ng-4.0.5
+
+tput setaf 2
+echo "[procps-ng-4.0.5] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                    *util-linux-2.41.1*                    #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [util-linux-2.41.1]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf util-linux-2.41.1.tar.xz
+pushd util-linux-2.41.1
+  ./configure --bindir=/usr/bin     \
+              --libdir=/usr/lib     \
+              --runstatedir=/run    \
+              --sbindir=/usr/sbin   \
+              --disable-chfn-chsh   \
+              --disable-login       \
+              --disable-nologin     \
+              --disable-su          \
+              --disable-setpriv     \
+              --disable-runuser     \
+              --disable-pylibmount  \
+              --disable-liblastlog2 \
+              --disable-static      \
+              --without-python      \
+              ADJTIME_PATH=/var/lib/hwclock/adjtime \
+              --docdir=/usr/share/doc/util-linux-2.41.1
+  make
+  touch /etc/fstab
+  chown -R tester .
+  su tester -c "make -k check"
+  
+#-----------------------------------------------------------#
+
+  popd
+rm -rf util-linux-2.41.1
+
+tput setaf 2
+echo "[util-linux-2.41.1] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                        **                        #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile []. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf 
+pushd 
+  
+#-----------------------------------------------------------#
+
+  popd
+rm -rf 
+
+tput setaf 2
+echo "[] is compiled !!!"
 tput sgr0
