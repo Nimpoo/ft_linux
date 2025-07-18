@@ -2,6 +2,19 @@
 
 set -eu
 
+cat > /etc/fstab << "EOF"
+# Begin /etc/fstab
+
+# file system	mount-point	type	options	dump	fsck
+#                                                              order
+
+/dev/sda1	/boot	ext4	defaults	1	1
+/dev/sda2	swap	swap	pri=1	0	0
+/dev/sda3	/	ext4	defaults	1	1
+
+# End /etc/fstab
+EOF
+
 pushd /sources
 
 
@@ -150,10 +163,10 @@ set timeout=5
 
 insmod part_gpt
 insmod ext2
-set root=(hd1,3)
+set root=(hd0,1)
 set gfxpayload=1024x768x32
 
 menuentry "GNU/Linux, Linux 6.15.6-mayoub" {
-        linux   /boot/vmlinuz-6.15.6-mayoub root=/dev/sdb3 ro
+        linux   /vmlinuz-6.15.6-mayoub root=/dev/sda3 ro
 }
 EOF

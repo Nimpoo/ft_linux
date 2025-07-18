@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# ? Physical partition
+sudo mount -v -t ext4 /dev/sdb3 $LFS/
+sudo mount -v -t ext4 /dev/sdb1 $LFS/boot
+sudo /sbin/swapon -v /dev/sdb2
+
+# ? Virtual partition for debugging or something else
 mount -v --bind /dev $LFS/dev
 
 mount -vt devpts devpts -o gid=5,mode=0620 $LFS/dev/pts
