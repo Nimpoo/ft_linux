@@ -99,9 +99,9 @@ pushd glibc-2.41
     sed '/test-installation/s@$(PERL)@echo not running@' -i ../Makefile
     make install
     sed '/RTLDLIST=/s@/usr@@g' -i /usr/bin/ldd
-    localedef -i en_US -f UTF-8 en_US.UTF-8cat
+    localedef -i en_US -f UTF-8 en_US.UTF-8
 
-cat > /etc/nsswitch.conf << "EOF"
+    cat > /etc/nsswitch.conf << "EOF"
 # Begin /etc/nsswitch.conf
 
 passwd: files systemd
@@ -139,7 +139,7 @@ EOF
 
     ln -sfv /usr/share/zoneinfo/Europe/Paris /etc/localtime
 
-cat > /etc/ld.so.conf << "EOF"
+    cat > /etc/ld.so.conf << "EOF"
 # Begin /etc/ld.so.conf
 /usr/local/lib
 /opt/lib
@@ -274,7 +274,7 @@ read -n 1 -s -r -p ""
 echo ""
 
 #-----------------------------------------------------------#
-tar -xf z4-1.10.0.tar.gz
+tar -xf lz4-1.10.0.tar.gz
 pushd lz4-1.10.0
   make BUILD_STATIC=no PREFIX=/usr
   make -j1 check
@@ -333,7 +333,7 @@ echo ""
 #-----------------------------------------------------------#
 tar -xf file-5.46.tar.gz
 pushd file-5.46
-  tar -xf file-5.46.tar.gz
+  ./configure --prefix=/usr
   make
   make check
   make install
@@ -360,7 +360,7 @@ read -n 1 -s -r -p ""
 echo ""
 
 #-----------------------------------------------------------#
-tar -xf tar -xf readline-8.3-rc2.tar.gz
+tar -xf readline-8.3-rc2.tar.gz
 pushd readline-8.3-rc2
   sed -i '/MV.*old/d' Makefile.in
   sed -i '/{OLDSUFF}/c:' support/shlib-install
@@ -631,9 +631,8 @@ pushd pkgconf-2.5.1
               --docdir=/usr/share/doc/pkgconf-2.5.1
   make
   make install
-  make install
-  install -v -dm755  /usr/share/doc/dejagnu-1.6.3
-  install -v -m644   doc/dejagnu.{html,txt} /usr/share/doc/dejagnu-1.6.3
+  ln -sv pkgconf   /usr/bin/pkg-config
+  ln -sv pkgconf.1 /usr/share/man/man1/pkg-config.1
 #-----------------------------------------------------------#
 
   popd
@@ -840,6 +839,7 @@ pushd acl-2.3.2
   ./configure --prefix=/usr    \
               --disable-static \
               --docdir=/usr/share/doc/acl-2.3.2
+  make
   make check
   make install
 #-----------------------------------------------------------#
@@ -949,6 +949,11 @@ pushd shadow-4.18.0
   make
   make exec_prefix=/usr install
   make -C man install-man
+  pwconv
+  grpconv
+  mkdir -p /etc/default
+  useradd -D --gid 999
+  passwd root
 #-----------------------------------------------------------#
 
   popd
@@ -1269,7 +1274,7 @@ pushd bash-5.3-rc2
   make
   chown -R tester .
 
-su -s /usr/bin/expect tester << "EOF"
+  su -s /usr/bin/expect tester << "EOF"
 set timeout -1
 spawn make tests
 expect eof
@@ -1547,7 +1552,7 @@ tar -xf XML-Parser-2.47.tar.gz
 pushd XML-Parser-2.47
   perl Makefile.PL
   make
-  make check
+  make test
   make install
 #-----------------------------------------------------------#
 
@@ -1650,19 +1655,19 @@ tput sgr0
 
 #?###########################################################
 #?                                                          #
-#                      *openSSL-3.5.0*                      #
+#                      *openssl-3.5.0*                      #
 #?                                                          #
 #?###########################################################
 
 tput setaf 4
-echo "You are about to compile [openSSL-3.5.0]. Press any key to continue..."
+echo "You are about to compile [openssl-3.5.0]. Press any key to continue..."
 tput sgr0
 read -n 1 -s -r -p ""
 echo ""
 
 #-----------------------------------------------------------#
-tar -xf openSSL-3.5.0.tar.gz
-pushd openSSL-3.5.0
+tar -xf openssl-3.5.0.tar.gz
+pushd openssl-3.5.0
   ./config --prefix=/usr         \
           --openssldir=/etc/ssl \
           --libdir=lib          \
@@ -1677,10 +1682,10 @@ pushd openSSL-3.5.0
 #-----------------------------------------------------------#
 
   popd
-rm -rf openSSL-3.5.0
+rm -rf openssl-3.5.0
 
 tput setaf 2
-echo "[openSSL-3.5.0] is compiled !!!"
+echo "[openssl-3.5.0] is compiled !!!"
 tput sgr0
 
 
@@ -1772,9 +1777,6 @@ pushd Python-3.13.5
   make test TESTOPTS="--timeout 120"
   make install
 
-  #! For install pip3 :
-  python3 -m ensurepip --upgrade
-
 # ? If you want to avoid the future pip3 warning about its version :
 # cat > /etc/pip.conf << EOF
 # [global]
@@ -1838,7 +1840,7 @@ read -n 1 -s -r -p ""
 echo ""
 
 #-----------------------------------------------------------#
-tar -xf packaging-25.0.tar.hz
+tar -xf packaging-25.0.tar.gz
 pushd packaging-25.0
   pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
   pip3 install --no-index --find-links dist packaging
@@ -2127,7 +2129,7 @@ read -n 1 -s -r -p ""
 echo ""
 
 #-----------------------------------------------------------#
-tar -xf findutils-4.10.0
+tar -xf findutils-4.10.0.tar.xz
 pushd findutils-4.10.0
   ./configure --prefix=/usr --localstatedir=/var/lib/locate
   make
@@ -2404,7 +2406,8 @@ echo ""
 #-----------------------------------------------------------#
 tar -xf tar-1.35.tar.xz
 pushd tar-1.35
-  FORCE_UNSAFE_CONFIGURE=1 ./configure --prefix=/usr
+  FORCE_UNSAFE_CONFIGURE=1  \
+  ./configure --prefix=/usr
   make
   make check
   make install
@@ -2416,6 +2419,43 @@ rm -rf tar-1.35
 
 tput setaf 2
 echo "[tar-1.35] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
+#                        *texinfo-7.2*                      #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [texinfo-7.2]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf texinfo-7.2.tar.xz
+pushd texinfo-7.2
+  ./configure --prefix=/usr
+  make
+  make check
+  make install
+  make TEXMF=/usr/share/texmf install-tex
+
+  pushd /usr/share/info
+    rm -v dir
+    for f in *
+      do install-info $f dir 2>/dev/null
+    done
+  popd
+#-----------------------------------------------------------#
+
+  popd
+rm -rf texinfo-7.2
+
+tput setaf 2
+echo "[texinfo-7.2] is compiled !!!"
 tput sgr0
 
 
@@ -2450,7 +2490,7 @@ pushd vim-9.1.1497
   done
   ln -sv ../vim/vim91/doc /usr/share/doc/vim-9.1.1497
 
-cat > /etc/vimrc << "EOF"
+  cat > /etc/vimrc << "EOF"
 " Begin /etc/vimrc
 
 " Ensure defaults are set before customizing settings, not after
@@ -2728,7 +2768,7 @@ pushd util-linux-2.41.1
   touch /etc/fstab
   chown -R tester .
   su tester -c "make -k check"
-  
+  make install
 #-----------------------------------------------------------#
 
   popd
@@ -2741,25 +2781,55 @@ tput sgr0
 
 #?###########################################################
 #?                                                          #
-#                        **                        #
+#                     *e2fsprogs-1.47.2*                    #
 #?                                                          #
 #?###########################################################
 
 tput setaf 4
-echo "You are about to compile []. Press any key to continue..."
+echo "You are about to compile [e2fsprogs-1.47.2]. Press any key to continue..."
 tput sgr0
 read -n 1 -s -r -p ""
 echo ""
 
 #-----------------------------------------------------------#
-tar -xf 
-pushd 
-  
+tar -xf e2fsprogs-1.47.2.tar.gz
+pushd e2fsprogs-1.47.2
+  mkdir -v build
+  pushd build
+    ../configure --prefix=/usr       \
+                --sysconfdir=/etc   \
+                --enable-elf-shlibs \
+                --disable-libblkid  \
+                --disable-libuuid   \
+                --disable-uuidd     \
+                --disable-fsck
+    make
+    make check
+    make install
+
+    rm -fv /usr/lib/{libcom_err,libe2p,libext2fs,libss}.a
+
+    gunzip -v /usr/share/info/libext2fs.info.gz
+    install-info --dir-file=/usr/share/info/dir /usr/share/info/libext2fs.info
+
+    makeinfo -o      doc/com_err.info ../lib/et/com_err.texinfo
+    install -v -m644 doc/com_err.info /usr/share/info
+    install-info --dir-file=/usr/share/info/dir /usr/share/info/com_err.info
+
+    sed 's/metadata_csum_seed,//' -i /etc/mke2fs.conf
+    popd
 #-----------------------------------------------------------#
 
   popd
-rm -rf 
+rm -rf e2fsprogs-1.47.2
 
 tput setaf 2
-echo "[] is compiled !!!"
+echo "[e2fsprogs-1.47.2] is compiled !!!"
 tput sgr0
+
+popd
+
+rm -rf /tmp/{*,.*}
+find /usr/lib /usr/libexec -name \*.la -delete
+find /usr -depth -name $(uname -m)-lfs-linux-gnu\* | xargs rm -rf
+userdel -r tester
