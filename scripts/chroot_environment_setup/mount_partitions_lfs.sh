@@ -2,8 +2,9 @@
 
 # ? Physical partition
 mount -v -t ext4 /dev/sdb3 $LFS/
-mount -v -t ext4 /dev/sdb1 $LFS/boot
-/sbin/swapon -v /dev/sdb2
+mount -v -t ext4 /dev/sdb2 $LFS/boot
+mount -v /dev/sdb1 $LFS/boot/efi
+/sbin/swapon -v /dev/sdb3
 
 # ? Virtual partition for debugging or something else
 mount -v --bind /dev $LFS/dev

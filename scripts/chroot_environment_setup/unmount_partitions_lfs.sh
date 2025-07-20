@@ -9,6 +9,7 @@ umount -v $LFS/proc
 umount -v $LFS/sys
 
 # ? Physical partition
+umount -v $LFS/boot/efi
 umount -v $LFS/boot
 /sbin/swapoff -v /dev/sdb2
 umount -v $LFS
