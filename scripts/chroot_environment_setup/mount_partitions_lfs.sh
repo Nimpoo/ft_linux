@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # ? Physical partition
-sudo mount -v -t ext4 /dev/sdb3 $LFS/
-sudo mount -v -t ext4 /dev/sdb1 $LFS/boot
-sudo /sbin/swapon -v /dev/sdb2
+mount -v -t ext4 /dev/sdb3 $LFS/
+mount -v -t ext4 /dev/sdb1 $LFS/boot
+/sbin/swapon -v /dev/sdb2
 
 # ? Virtual partition for debugging or something else
 mount -v --bind /dev $LFS/dev
