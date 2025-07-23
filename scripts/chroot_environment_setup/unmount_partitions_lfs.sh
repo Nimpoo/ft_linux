@@ -11,5 +11,5 @@ umount -v $LFS/sys
 # ? Physical partition
 umount -v $LFS/boot/efi
 umount -v $LFS/boot
-/sbin/swapoff -v /dev/sdb2
+/sbin/swapoff -v /dev/sdb4
 umount -v $LFS
