@@ -3,7 +3,7 @@
 # ? Physical partition
 mount -v -t ext4 /dev/sdb3 $LFS/
 mount -v -t ext4 /dev/sdb2 $LFS/boot
-mount -v /dev/sdb1 $LFS/boot/efi
+mount -v -t vfat /dev/sdb1 -o codepage=437,iocharset=iso8859-1 $LFS/boot/efi
 /sbin/swapon -v /dev/sdb4
 
 # ? Virtual partition for debugging or something else
