@@ -183,6 +183,12 @@ echo ""
 #-----------------------------------------------------------#
 tar -xf fuse-3.17.3.tar.gz
 pushd fuse-3.17.3
+    tput setaf 4
+    echo "WARNING !!! DON'T FORGET TO RECOMPILE THE KERNEL WITH THE SPECIFIC OPTION BEFORE CONTINUE. Press any key to continue..."
+    tput sgr0
+    read -n 1 -s -r -p ""
+    echo ""
+
   sed -i '/^udev/,$ s/^/#/' util/meson.build &&
 
   mkdir build &&
@@ -1268,6 +1274,11 @@ pushd openssh-10.0p1
   install -v -m755 -d /usr/share/doc/openssh-10.0p1     &&
   install -v -m644    INSTALL LICENCE OVERVIEW README* \
                       /usr/share/doc/openssh-10.0p1
+
+  tar -xf ../blfs-systemd-units-20241211.tar.xz
+  pushd blfs-systemd-units-20241211
+    make install-sshd
+    popd
 #-----------------------------------------------------------#
 
   popd
@@ -1535,6 +1546,43 @@ tput sgr0
 
 #?###########################################################
 #?                                                          #
+#                      *dosfstools-4.2*                     #
+#?                                                          #
+#?###########################################################
+
+tput setaf 4
+echo "You are about to compile [dosfstools-4.2]. Press any key to continue..."
+tput sgr0
+read -n 1 -s -r -p ""
+echo ""
+
+#-----------------------------------------------------------#
+tar -xf dosfstools-4.2.tar.gz
+pushd dosfstools-4.2
+  tput setaf 4
+  echo "WARNING !!! DON'T FORGET TO RECOMPILE THE KERNEL WITH THE SPECIFIC OPTION BEFORE CONTINUE. Press any key to continue..."
+  tput sgr0
+  read -n 1 -s -r -p ""
+  echo ""
+
+  ./configure --prefix=/usr            \
+              --enable-compat-symlinks \
+              --mandir=/usr/share/man  \
+              --docdir=/usr/share/doc/dosfstools-4.2 &&
+  make
+  make install
+#-----------------------------------------------------------#
+
+  popd
+rm -rf dosfstools-4.2
+
+tput setaf 2
+echo "[dosfstools-4.2] is compiled !!!"
+tput sgr0
+
+
+#?###########################################################
+#?                                                          #
 #                        *grub-2.12*                        #
 #?                                                          #
 #?###########################################################
@@ -1548,6 +1596,12 @@ echo ""
 #-----------------------------------------------------------#
 tar -xf grub-2.12.tar.xz
 pushd grub-2.12
+  tput setaf 4
+  echo "WARNING !!! DON'T FORGET TO RECOMPILE THE KERNEL WITH THE SPECIFIC OPTION FOR GRUB IN LFS-SYSTEMD BEFORE CONTINUE. Press any key to continue..."
+  tput sgr0
+  read -n 1 -s -r -p ""
+  echo ""
+
   unset {C,CPP,CXX,LD}FLAGS
   mkdir -pv /usr/share/fonts/unifont &&
   gunzip -c ../unifont-16.0.01.pcf.gz > /usr/share/fonts/unifont/unifont.pcf
@@ -1574,3 +1628,32 @@ rm -rf grub-2.12
 tput setaf 2
 echo "[grub-2.12] is compiled !!!"
 tput sgr0
+
+
+cat >> /etc/fstab << EOF
+/dev/sda1 /boot/efi vfat codepage=437,iocharset=iso8859-1 0 1
+EOF
+
+cat > /boot/grub/grub.cfg << EOF
+# Begin /boot/grub/grub.cfg
+set default=0
+set timeout=5
+
+insmod part_gpt
+insmod ext2
+set root=(hd0,2)
+
+insmod efi_gop
+insmod efi_uga
+if loadfont /boot/grub/fonts/unicode.pf2; then
+  terminal_output gfxterm
+fi
+
+menuentry "GNU/Linux, Linux 6.15.4-mayoub" {
+  linux   /vmlinuz-6.15.4-mayoub root=/dev/sda3 ro
+}
+
+menuentry "Firmware Setup" {
+  fwsetup
+}
+EOF
