@@ -36,3 +36,12 @@ And obviously, keep the [LFS book](https://www.linuxfromscratch.org/lfs/view/sys
     <td align="center"><a href="https://github.com/nimpoo/"><img src="https://avatars.githubusercontent.com/u/91483405?v=4" width="100px;" alt="Nimpô's GitHub"/><br /><sub><b>Nimpô (mayoub)</b></sub></a><br /><a href="https://profile.intra.42.fr/users/mayoub" title="Intra 42"><img src="https://img.shields.io/badge/Nice-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
   </tr>
 </table>
+
+# Special thanks to :
+
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/jbettini/"><img src="https://avatars.githubusercontent.com/u/85110911?v=4" width="100px;" alt=""/><br /><sub><b>jbettini</b></sub></a><br /><a href="https://profile.intra.42.fr/users/jbettini" title="Intra 42"><img src="https://img.shields.io/badge/Nice-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
+    <td align="center"><a href="https://github.com/noalexan/"><img src="https://avatars.githubusercontent.com/u/102285721?v=4" width="100px;" alt=""/><br /><sub><b>Noah (noalexan)</b></sub></a><br /><a href="https://profile.intra.42.fr/users/noalexan" title="Intra 42"><img src="https://img.shields.io/badge/Nice-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
+  </tr>
+</table>
