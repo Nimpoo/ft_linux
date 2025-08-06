@@ -1649,7 +1649,7 @@ if loadfont /boot/grub/fonts/unicode.pf2; then
   terminal_output gfxterm
 fi
 
-menuentry "GNU/Linux, Linux 6.15.4-mayoub" {
+menuentry "GNU/Linux, Linux 6.15.6-mayoub" {
   linux   /vmlinuz-6.15.4-mayoub root=/dev/sda3 ro
 }
 

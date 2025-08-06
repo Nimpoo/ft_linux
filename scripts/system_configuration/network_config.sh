@@ -32,6 +32,8 @@ nameserver 8.8.4.4
 # End /etc/resolv.conf
 EOF
 
+echo "<lfs>" > /etc/hostname
+
 cat > /etc/hosts << "EOF"
 # Begin /etc/hosts
 
