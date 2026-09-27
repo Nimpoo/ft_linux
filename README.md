@@ -29,15 +29,7 @@ I suggest you to make this project in a virtual machine, because it can be a bit
 
 And obviously, keep the [LFS book](https://www.linuxfromscratch.org/lfs/view/systemd/) open in front of you.
 
-# MADE BY ME
-
-<table>
-  <tr>
-    <td align="center"><a href="https://github.com/nimpoo/"><img src="https://avatars.githubusercontent.com/u/91483405?v=4" width="100px;" alt="Nimpô's GitHub"/><br /><sub><b>Nimpô (mayoub)</b></sub></a><br /><a href="https://profile.intra.42.fr/users/mayoub" title="Intra 42"><img src="https://img.shields.io/badge/Nice-FFFFFF?style=plastic&logo=42&logoColor=000000" alt="Intra 42"/></a></td>
-  </tr>
-</table>
-
-# Special thanks to :
+# Special thanks to:
 
 <table>
   <tr>
